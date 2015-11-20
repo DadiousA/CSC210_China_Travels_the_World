@@ -262,7 +262,7 @@
               dataType : "text",
               success: function( data ) {
                 alert("You need to relog in!");
-                window.location.replace('index.html');
+                window.location.replace('/');
               }
             });
           }
@@ -278,7 +278,7 @@
             dataType : "text",
             success: function( data ) {
                 Cookies.remove('email');
-                window.location.replace('index.html');
+                window.location.replace('/');
             }
           });
         });
@@ -292,7 +292,7 @@
               dataType : "text",
               success: function( data ) {
                   Cookies.remove('email');
-                  window.location.replace('index.html');
+                  window.location.replace('/');
               }
             });
           }
