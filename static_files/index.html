@@ -65,10 +65,17 @@
 
     <script type="text/javascript">
 
+      if (Cookies.get('email')!=undefined)
+        {
+          window.location.replace('/log_in.html');
+        }
+
       $(document).ready(function() {
 
         $("#time").html("Current time: " + new Date());
         setInterval(function(){$("#time").html("Current time: " + new Date());}, 1000);
+
+
 
         $(document).ajaxError(function() {
           console.log("ajaxError");
