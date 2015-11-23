@@ -4,7 +4,7 @@
     
     <style type="text/css"> 
       body {
-        background-image:url("background.gif");
+        background-image:url("options/background.gif");
         background-repeat: no-repeat;
         background-size: 100% 100%;
       }
@@ -14,41 +14,13 @@
         font-family: "Verdana";
         color: black;
       }
-      #introduction{
-        text-align:center;
-        font-family: "Lucida Console";
-        color: black;
-      }
-      img {
-        width: 70%;
-        margin: 20px;
-      }
-      .display{
-        overflow: auto;
-        width: 100%;
-        background-color:rgba(0,0,0,0.2);
-      }
-      .display>.inner{
-        font-size: 30px;
-        font-family: "Verdana";
-        text-align:center;
-        float: left;
-        width: 50%;
-        opacity: 1;
-      }
       .label{
         margin: 10px auto;
         font-family: Lucida Console;
         font-size: 20px;
       }
 
-      .login{
-        margin: 10px auto;
-        width: 60%;
-        border:3px solid #73AD21;
-        padding: 10px;
-      }
-      .login>#input{
+      .login>.input{
         margin: 10px auto;
         
       }
@@ -62,19 +34,58 @@
 
     <script src="JS-api/jquery-2.1.4.js"></script>
     <script src="JS-api/js.cookie.js"></script>
+    <script src="JS-api/jssor.slider.debug.js"></script>
 
     <script type="text/javascript">
 
-      if (Cookies.get('email')!=undefined)
+      
+
+      $(document).ready(function() {
+
+        function reloadJssor(photos) {
+        var options = { 
+          $AutoPlay: true,
+          $AutoPlaySteps: 4,
+          $SlideDuration: 160,
+          $SlideWidth: 600,
+          $SlideSpacing: 60,
+          $Cols: 4,
+          $ArrowNavigatorOptions: {                      
+                    $Class: $JssorArrowNavigator$,              
+                    $ChanceToShow: 2,
+                    $AutoCenter: 2,
+                    $Steps: 1
+                  }
+        };
+        var JssorStruct = "<div id='slider' style='position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1200px; height: 350px; overflow: hidden; visibility: hidden;'><div id='slides' data-u='slides' style='cursor: default; position: relative; top: 0px; left: 0px; width: 1200px; height: 350px; overflow: hidden;'></div></div>";
+        var ArrowStruct = "<style> .arrowleft, .arrowright {display: block;position: absolute;width: 55px;height: 55px;cursor: pointer;background: url(options/arrow.png) no-repeat;overflow: hidden;}.arrowleft { background-position: -3px -33px; }.arrowright { background-position: -63px -33px; }.arrowleft:hover { background-position: -123px -33px; }.arrowright:hover { background-position: -183px -33px; }.arrowleft.arrowleftdn { background-position: -243px -33px; }.arrowright.arrowrightdn { background-position: -303px -33px; }</style><span u='arrowleft' class='arrowleft' style='top: 123px; left: 8px;'></span><span u='arrowright' class='arrowright' style='top: 123px; right: 8px;'></span>"
+        $('#slider').remove();
+        $('#display').append(JssorStruct);
+        for(i=0;i<photos.length;i++){
+          $('#slides').append("<div style='display: none;'><img data-u='image' src='image_base/"+photos[i]+"' /></div>");
+        }
+        $('#slider').append(ArrowStruct);
+        var slider = new $JssorSlider$('slider', options);
+        slider.$ScaleWidth(slider.$Elmt.parentNode.clientWidth - 200); 
+      }
+
+        if (Cookies.get('email')!=undefined)
         {
           window.location.replace('/log_in.html');
         }
 
-      $(document).ready(function() {
-
         $("#time").html("Current time: " + new Date());
         setInterval(function(){$("#time").html("Current time: " + new Date());}, 1000);
 
+        $.ajax({
+          url: "/image",
+          type: "GET",
+          dataType : "json",
+
+          success: function( data ) {
+            reloadJssor(data.photos);
+          },
+        });
 
 
         $(document).ajaxError(function() {
@@ -87,7 +98,7 @@
             alert("Sorry, need more information!");
           else
             $.ajax({
-              url: "users/",
+              url: "/users",
               type: "POST",
               dataType : "text",
 
@@ -96,7 +107,6 @@
                       email: $("#emailBox").val(),
                     },
               success: function( data ) {
-                console.log(data);
                 if (data) {
                   alert("Welcome " + $("#nameBox").val() + "! You are now part of Wanyou!");
                 } 
@@ -111,7 +121,7 @@
 
         $("#logInButton").click(function() { 
           $.ajax({
-            url: "users/" + $("#logInEmailBox").val(),
+            url: "/users/" + $("#logInEmailBox").val(),
             type: "GET",
             dataType : "text", 
 
@@ -139,35 +149,26 @@
   <body>
     <h1>Welcome to Wan'U!</h1>
     
-    <p id="introduction">Our website is dedicated to sharing traveling information! Each week we select one image as la plus belle.</p>
+    <p id="introduction" style='text-align:center;font-family: "Lucida Console";color: black;'>Our website is dedicated to sharing traveling information! Each week we select one image as la plus belle.</p>
 
     <div id="time"></div>
     <br>
-    <div class="display">
-      <div class="inner">
-        <div >Visit Paris:</div>
-        <img src="index_eiffel.jpg"/>
-      </div>
-      <div class="inner">
-        <div>Visit Geneva:</div>
-        <img src="index_geneva.jpg"/>
-      </div>
+    <div id="display" style='background-color:rgba(0,0,0,0.15); margin-left:50px; margin-right:50px;padding: 30px;'>
+      <div id='slider'> </div>
     </div>
 
 
     <br>
 
-    <div class="login">
+    <div id="login" style='position: relative; top: 0px;margin: 0px auto;width: 60%;border:3px solid #73AD21;padding: 10px; text-align: center;'>
       <div class="label"> Already a member of Wan'U? Sign in with your email:</div> 
-        <div id="input">
+        <div class="input">
           Email: <input id="logInEmailBox" type="text" size="20" placeholder="Enter email"/> 
           <button id="logInButton">Sign in</button>
         </div>
-    </div>
-    
-    <div class="login">
+
       <div class="label"> New member? Sign up here:</div>
-        <div id="input">
+        <div class="input">
           Name: <input id="nameBox" type="text" size="20" placeholder="Enter Name"/>
           Email: <input id="emailBox" type="text" size="20" placeholder="Enter Email"/>
           <button id="createButton">Sign up</button>

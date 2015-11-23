@@ -29,7 +29,7 @@ app.post('/users', function (req, res) {
     if (row.length==0)
     {
       db.run("INSERT INTO WanU_user (email, name, log_in, pictures) VALUES (?,?,?,?)", [postBody.email,postBody.name,0,0]);  
-      mkdirp('static_files/'+postBody.email, function (err) {});
+      mkdirp('static_files/user_files/'+postBody.email, function (err) {});
       res.send('Account created.');
       return;
     }
@@ -70,6 +70,20 @@ app.put('/user/*', function (req, res) {
   res.send('OK');
 });
 
+// delete account
+app.delete('/user/*', function (req, res) {
+  var userEmail = req.params[0]; 
+  db.run("DELETE FROM WanU_user WHERE email=?",[userEmail]);
+  fs.removeSync(__dirname+"/static_files/user_files/"+userEmail);
+  res.send("OK");
+});
+
+// update user preferance
+app.post('/user_pref', function (req, res) {
+  var postBody = req.body;
+  db.run("UPDATE WanU_user SET language=?, city=? where email=?",[postBody.language,postBody.city,postBody.email]);
+});
+
 // get user preference
 app.get('/user_pref/*', function (req, res) {
   var userEmail = req.params[0]; 
@@ -82,67 +96,45 @@ app.get('/user_pref/*', function (req, res) {
     });
 });
 
-// get user preference
-app.get('/image/*', function (req, res) {
-  var userEmail = req.params[0]; 
-//  console.log(userEmail);
-  var files=fs.readdirSync(__dirname+'/static_files/'+userEmail);
-//  console.log(files);
-//  console.log("Number of photos: "+files.length);
-  var user_photos={photos: files};
-  res.send(user_photos);
-});
-
-
-// update user preferance
-app.post('/user_pref', function (req, res) {
-  var postBody = req.body;
-  db.run("UPDATE WanU_user SET language=?, city=? where email=?",[postBody.language,postBody.city,postBody.email]);
-});
-
+// post user image
 app.post('/image/*', function (req, res) {
   var userEmail = req.params[0]; 
   var form = new formidable.IncomingForm();
-  form.uploadDir = __dirname + "\\static_files\\" + userEmail;
+  form.uploadDir = __dirname + "/static_files/image_base";
   form.keepExtensions = true;
   form.parse(req, function(err, fields, files) {
     db.all("SELECT * FROM WanU_user WHERE email=?", [userEmail], function(err, row){
       var numPictures = row[0].pictures;
       numPictures++;
       db.run("UPDATE WanU_user SET pictures=? where email=?",[numPictures,userEmail]);
-      fs.renameSync(files.image.path,
-                    __dirname + "\\static_files\\" + userEmail+"\\"+numPictures+path.extname(files.image.path));
-      res.send("Image Successfully Uploaded.");
+      fs.copySync(files.image.path,
+                    __dirname + "/static_files/user_files/" + userEmail+"/"+numPictures+path.extname(files.image.path));
+
+      var filesRes=fs.readdirSync(__dirname+'/static_files/user_files/'+userEmail);
+      var user_photos={photos: filesRes};
+      res.send(user_photos);
     });
   });
 });
 
-
-
-
-/*
-// READ a list of all usernames (note that there's no '*' at the end)
-//
-// To test with curl, run:
-//   curl -X GET http://localhost:3000/users
-app.get('/users', function (req, res) {
-  var allUsernames = [];
-
-  for (var i = 0; i < fakeDatabase.length; i++) {
-    var e = fakeDatabase[i];
-    allUsernames.push(e.name); // just record names
-  }
-
-  res.send(allUsernames);
-});
-*/
-
-app.delete('/user/*', function (req, res) {
+// get user image
+app.get('/image/*', function (req, res) {
   var userEmail = req.params[0]; 
-  db.run("DELETE FROM WanU_user WHERE email=?",[userEmail]);
-  fs.removeSync(__dirname+"/static_files/"+userEmail);
-  res.send("OK");
+//  console.log(userEmail);
+  var files=fs.readdirSync(__dirname+'/static_files/user_files/'+userEmail);
+  var user_photos={photos: files};
+  res.send(user_photos);
 });
+
+// get all image
+
+app.get('/image', function (req, res) {
+  var files=fs.readdirSync(__dirname+'/static_files/image_base');
+  var user_photos={photos: files};
+  res.send(user_photos);
+});
+
+
 
 
 
