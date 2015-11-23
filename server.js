@@ -21,7 +21,7 @@ var mkdirp = require('mkdirp');
 var db = new sqlite3.Database('WanU.db');
 mkdirp('static_files/user_files/', function (err) {});
 
-db.run('CREATE TABLE IF NOT EXISTS WanU_user (email TEXT PRIMARY KEY, name TEXT, log_in INTEGER, language TEXT, city TEXT, pictures INTEGER)');
+db.run('CREATE TABLE IF NOT EXISTS WanU_user (email TEXT PRIMARY KEY, name TEXT, log_in INTEGER, language TEXT, city TEXT)');
 
 // creat account
 app.post('/users', function (req, res) {
@@ -29,7 +29,7 @@ app.post('/users', function (req, res) {
   db.all("SELECT * FROM WanU_user WHERE email='"+postBody.email+"'", function (err, row) {
     if (row.length==0)
     {
-      db.run("INSERT INTO WanU_user (email, name, log_in, pictures) VALUES (?,?,?,?)", [postBody.email,postBody.name,0,0]);  
+      db.run("INSERT INTO WanU_user (email, name, log_in) VALUES (?,?,?)", [postBody.email,postBody.name,0]);  
       mkdirp('static_files/user_files/'+postBody.email, function (err) {});
       res.send('Account created.');
       return;
@@ -104,35 +104,24 @@ app.post('/image/*', function (req, res) {
   form.uploadDir = __dirname + "/static_files/image_base";
   form.keepExtensions = true;
   form.parse(req, function(err, fields, files) {
-    db.all("SELECT * FROM WanU_user WHERE email=?", [userEmail], function(err, row){
-      var numPictures = row[0].pictures;
-      numPictures++;
-      db.run("UPDATE WanU_user SET pictures=? where email=?",[numPictures,userEmail]);
       fs.copySync(files.image.path,
-                    __dirname + "/static_files/user_files/" + userEmail+"/"+numPictures+path.extname(files.image.path));
-
+        __dirname + "/static_files/user_files/" + userEmail+"/"+path.basename(files.image.path));
       var filesRes=fs.readdirSync(__dirname+'/static_files/user_files/'+userEmail);
-      var user_photos={photos: filesRes};
-      res.send(user_photos);
-    });
+      res.send({photos: filesRes});
   });
 });
 
 // get user image
 app.get('/image/*', function (req, res) {
   var userEmail = req.params[0]; 
-//  console.log(userEmail);
   var files=fs.readdirSync(__dirname+'/static_files/user_files/'+userEmail);
-  var user_photos={photos: files};
-  res.send(user_photos);
+  res.send({photos: files});
 });
 
 // get all image
-
 app.get('/image', function (req, res) {
   var files=fs.readdirSync(__dirname+'/static_files/image_base');
-  var user_photos={photos: files};
-  res.send(user_photos);
+  res.send({photos: files});
 });
 
 
