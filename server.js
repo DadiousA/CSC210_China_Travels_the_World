@@ -19,6 +19,7 @@ var util = require('util');
 var fs = require('fs-extra');
 var mkdirp = require('mkdirp'); 
 var db = new sqlite3.Database('WanU.db');
+mkdirp('static_files/user_files/', function (err) {});
 
 db.run('CREATE TABLE IF NOT EXISTS WanU_user (email TEXT PRIMARY KEY, name TEXT, log_in INTEGER, language TEXT, city TEXT, pictures INTEGER)');
 
