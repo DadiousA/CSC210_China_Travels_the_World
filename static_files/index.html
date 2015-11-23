@@ -42,10 +42,20 @@
 
       $(document).ready(function() {
 
+        function shuffleArray(array) {
+          for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+          }
+          return array;
+        }
+
         function reloadJssor(photos) {
         var options = { 
           $AutoPlay: true,
-          $AutoPlaySteps: 4,
+          $AutoPlaySteps: 2,
           $SlideDuration: 160,
           $SlideWidth: 600,
           $SlideSpacing: 60,
@@ -61,6 +71,7 @@
         var ArrowStruct = "<style> .arrowleft, .arrowright {display: block;position: absolute;width: 55px;height: 55px;cursor: pointer;background: url(options/arrow.png) no-repeat;overflow: hidden;}.arrowleft { background-position: -3px -33px; }.arrowright { background-position: -63px -33px; }.arrowleft:hover { background-position: -123px -33px; }.arrowright:hover { background-position: -183px -33px; }.arrowleft.arrowleftdn { background-position: -243px -33px; }.arrowright.arrowrightdn { background-position: -303px -33px; }</style><span u='arrowleft' class='arrowleft' style='top: 123px; left: 8px;'></span><span u='arrowright' class='arrowright' style='top: 123px; right: 8px;'></span>"
         $('#slider').remove();
         $('#display').append(JssorStruct);
+        photos=shuffleArray(photos);
         for(i=0;i<photos.length;i++){
           $('#slides').append("<div style='display: none;'><img data-u='image' src='image_base/"+photos[i]+"' /></div>");
         }

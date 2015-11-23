@@ -51,7 +51,7 @@
 	
     <script type="text/javascript">
 
-      function reloadJssor(file, userEmail) {
+      function reloadJssor(photos, userEmail) {
         var options = { 
           $AutoPlay: true,
           $AutoPlaySteps: 4,
@@ -70,8 +70,8 @@
         var ArrowStruct = "<style> .arrowleft, .arrowright {display: block;position: absolute;width: 55px;height: 55px;cursor: pointer;background: url(options/arrow.png) no-repeat;overflow: hidden;}.arrowleft { background-position: -3px -33px; }.arrowright { background-position: -63px -33px; }.arrowleft:hover { background-position: -123px -33px; }.arrowright:hover { background-position: -183px -33px; }.arrowleft.arrowleftdn { background-position: -243px -33px; }.arrowright.arrowrightdn { background-position: -303px -33px; }</style><span u='arrowleft' class='arrowleft' style='top: 123px; left: 8px;'></span><span u='arrowright' class='arrowright' style='top: 123px; right: 8px;'></span>"
         $('#slider').remove();
         $('#picture-panel').append(JssorStruct);
-        for(i=0;i<file.length;i++){
-          $('#slides').append("<div style='display: none;'><img data-u='image' src='user_files/"+userEmail+"/"+file[i]+"' /></div>");
+        for(i=0;i<photos.length;i++){
+          $('#slides').append("<div style='display: none;'><img data-u='image' src='user_files/"+userEmail+"/"+photos[i]+"' /></div>");
         }
         $('#slider').append(ArrowStruct);
         var slider = new $JssorSlider$('slider', options);
