@@ -120,6 +120,8 @@
               success: function( data ) {
                 if (data) {
                   alert("Welcome " + $("#nameBox").val() + "! You are now part of Wanyou!");
+                  Cookies.set('email', $("#emailBox").val(), { expires: 1/48 });
+                window.location.replace('log_in.html');
                 } 
                 else {
                   alert("Sorry, Account email already exists. Try another!");
