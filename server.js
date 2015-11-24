@@ -18,6 +18,8 @@ var path = require('path');
 var util = require('util');
 var fs = require('fs-extra');
 var db = new sqlite3.Database('WanU.db');
+fs.mkdirpSync('static_files/user_files');
+fs.mkdirpSync('static_files/user_prompt');
 
 db.run('CREATE TABLE IF NOT EXISTS WanU_user (email TEXT PRIMARY KEY, name TEXT, log_in INTEGER, language TEXT, city TEXT)');
 
