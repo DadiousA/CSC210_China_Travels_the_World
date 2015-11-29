@@ -1,11 +1,3 @@
-// Prerequisites - first run:
-//   npm install express
-//   npm install body-parser
-//
-// then run:
-//   node server.js
-//
-
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
