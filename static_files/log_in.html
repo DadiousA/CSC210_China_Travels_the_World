@@ -134,6 +134,8 @@
             dataType : "text",
             success: function( data ) {
                 Cookies.remove('email');
+                Cookies.remove('visit');
+                Cookies.remove('name');
                 window.location.replace('/');
             }
           });
@@ -148,6 +150,7 @@
               dataType : "text",
               success: function( data ) {
                   Cookies.remove('email');
+                  Cookies.remove('name');
                   window.location.replace('/');
               }
             });
