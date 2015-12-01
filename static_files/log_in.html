@@ -94,7 +94,8 @@
             $("#city").val(data.city);
             userName = data.name;
             Cookies.set('name', data.name, { expires: 1/48 });
-            $("#header").html("Welcome back, <i>" +userName+'</i>.');
+            if (Cookies.get('visit')!='true') $("#header").html("Welcome back, <i>" +userName+'</i>.');
+            else $("#header").html("Enjoy <i>" +userName+"'s</i> photos!");
           },
         });
 
@@ -185,7 +186,13 @@
           });
         });
 
-        
+        if (Cookies.get('visit')=='true')
+        {
+          $('#deleteaccount').remove();
+          $('#photoUpload').remove();
+          $("input").prop('disabled', true);
+          
+        }        
 
 
         

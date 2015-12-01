@@ -154,6 +154,26 @@
             },
           });
         });
+
+        $("#visit").click(function() { 
+          $.ajax({
+            url: "/users/" + $("#logInEmailBox").val(),
+            type: "GET",
+            dataType : "text", 
+
+            success: function( data ) {
+              if (data) {
+                Cookies.set('email', $("#logInEmailBox").val(), { expires: 1/48 });
+                Cookies.set('visit','true', { expires: 1/48 });
+                window.location.replace('log_in.html');
+              } 
+              else {
+                alert("Sorry, account not found!");
+                $("#logInEmailBox").val("");
+              }
+            },
+          });
+        });
       });
     </script>
 
@@ -178,6 +198,7 @@
         <div class="input">
           Email: <input id="logInEmailBox" type="text" size="20" placeholder="Enter email"/> 
           <button id="logInButton">Sign in</button>
+          <button id="visit">View as Visitors</button>
         </div>
 
       <div class="label"> New member? Sign up here:</div>

@@ -61,7 +61,11 @@
                         type: "GET",
                         success: function( data ) {
                             if(data) $('#text').html(data);
-                                else $('#text').html('click here to enter introduction of this photo!');  
+                                else 
+                                {    if (Cookies.get('visit')!='true')
+                                        $('#text').html('click here to enter introduction of this photo!'); 
+                                    else $('#text').html("no introduction has been added to this photo!");
+                                }
                         }
                     });
                 }, 100);
@@ -119,6 +123,14 @@
                 $("#home").click(function() {        
                     location.replace('log_in.html');
                 });
+
+                if (Cookies.get('visit')=='true')
+                {
+                    $('#delete').remove();
+                    $("#test").prop('disabled', true);
+                    $('#text').html("no introduction has been added to this photo!");
+                    $('#home').height('100%');
+                }  
 
             });
             
