@@ -22,13 +22,15 @@
 
       .login>.input{
         margin: 10px auto;
-        
       }
-      #time{
+      #image{
         position: absolute;
         right: 5px;
         top: 10px;
-        font-size: 15px;
+        font-size: 20px;
+        text-align:center;
+        font-family: "Verdana";
+        color: black;
       }
     </style>
 
@@ -37,8 +39,6 @@
     <script src="JS-api/jssor.slider.debug.js"></script>
 
     <script type="text/javascript">
-
-      
 
       $(document).ready(function() {
 
@@ -80,24 +80,37 @@
         slider.$ScaleWidth(slider.$Elmt.parentNode.clientWidth - 200); 
       }
 
-        if (Cookies.get('email')!=undefined)
-        {
-          window.location.replace('/log_in.html');
-        }
+        var exhibit;
+        var numberImage = 0;
 
-        $("#time").html("Current time: " + new Date());
-        setInterval(function(){$("#time").html("Current time: " + new Date());}, 1000);
-
+        //initiate
         $.ajax({
           url: "/image",
           type: "GET",
           dataType : "json",
 
           success: function( data ) {
+            exhibit = data.photos;
             reloadJssor(data.photos);
+            numberImage = exhibit.length;
           },
         });
 
+        //recursion
+        window.setInterval(function() {
+                    $.ajax({
+                        url: "/image",
+                        type: "GET",
+                        success: function( data ) {
+                            if (exhibit.length!=data.photos.length){  
+                              exhibit = data.photos;
+                              reloadJssor(data.photos);
+                              numberImage = exhibit.length;
+                          }
+                        }
+                    });
+                    $("#image").html( numberImage+" images in our database.");
+                }, 100);
 
         $(document).ajaxError(function() {
           console.log("ajaxError");
@@ -184,7 +197,7 @@
     
     <p id="introduction" style='text-align:center;font-family: "Lucida Console";color: black;'>Our website is dedicated to sharing traveling photos! Each week we select one photo as la plus belle.</p>
 
-    <div id="time"></div>
+    <div id="image"></div>
     <br>
     <div id="display" style='background-color:rgba(0,0,0,0.15); margin-left:50px; margin-right:50px;padding: 30px;'>
       <div id='slider'> </div>
