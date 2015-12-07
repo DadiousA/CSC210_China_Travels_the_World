@@ -84,6 +84,16 @@
         var userEmail = Cookies.get('email');
         var userName = "";
 
+        $("#time").html("Everything is up to date.");
+
+        if (Cookies.get('visit')=='true')
+        {
+          $('#deleteaccount').remove();
+          $('#photoUpload').remove();
+          $("input").prop('disabled', true);
+          $('#slider').html("Ops! This user haven't upload any pictures!");
+        }   
+        
         $.ajax({
           url: "/user_pref/"+userEmail,
           type: "GET",
@@ -99,6 +109,8 @@
           },
         });
 
+        var exhibit = [];
+
         $.ajax({
           url: "/image/"+userEmail,
           type: "GET",
@@ -106,7 +118,10 @@
 
           success: function( data ) {
             if(data.photos.length != 0)
-            reloadJssor(data.photos,userEmail);
+            {
+              exhibit = data.photos;
+              reloadJssor(data.photos,userEmail);
+            }
           },
         });
 
@@ -115,17 +130,38 @@
             $.ajax({
               url: "/user/"+userEmail,
               type: "PUT",
-              dataType : "text",
-              success: function( data ) {
-                alert("You need to relog in!");
-                window.location.replace('/');
-              }
             });
+            alert("You need to relog in!");
+            window.location.replace('/');
           }
+          $.ajax({
+          url: "/image/"+userEmail,
+          type: "GET",
+          dataType : "json",
+
+          success: function( data ) {
+            if(data.photos.length != exhibit.length){
+              $("#time").html(UserName+"'s images have changed. Click here to reload.");
+            }
+          },
+        });
+
         }, 1000); 
 
-        $("#time").val("Current time: " + new Date()+'.');
-        setInterval(function(){$("#time").html("Current time: " + new Date()+'.');}, 1000);
+        $("#time").click(function(){
+          $.ajax({
+            url: "/image/"+userEmail,
+            type: "GET",
+            dataType : "json",
+
+            success: function( data ) {
+              if(data.photos.length != 0)
+                exhibit = data.photos;
+                reloadJssor(data.photos,userEmail);
+                $("#time").html("Everything is up to date.");
+            },
+          });
+        });
 
         $("#logout").click(function() {        
           $.ajax({
@@ -189,13 +225,7 @@
           });
         });
 
-        if (Cookies.get('visit')=='true')
-        {
-          $('#deleteaccount').remove();
-          $('#photoUpload').remove();
-          $("input").prop('disabled', true);
-          
-        }        
+             
 
 
         

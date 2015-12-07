@@ -80,7 +80,7 @@
         slider.$ScaleWidth(slider.$Elmt.parentNode.clientWidth - 200); 
       }
 
-        var exhibit;
+        var exhibit = [];
         var numberImage = 0;
 
         //initiate
@@ -104,7 +104,6 @@
                         success: function( data ) {
                             if (exhibit.length!=data.photos.length){  
                               exhibit = data.photos;
-                              reloadJssor(data.photos);
                               numberImage = exhibit.length;
                           }
                         }
