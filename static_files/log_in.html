@@ -4,8 +4,8 @@
     <style type="text/css">
       body {
         background-image:url("background.gif");
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-repeat: repeat-y;
+       /* background-size: 100% 100%;*/
       }
       .picture_scroller>img {
         height: 80%;
@@ -202,7 +202,7 @@
         }
         else{
           slideimages=new Array()
-          slideimages=["index_eiffel.jpg", "index_geneva.jpg", "toulouse.jpg", "haifa.jpg"]
+          slideimages=["/public/index_eiffel.jpg", "/public/index_geneva.jpg", "/public/toulouse.jpg", "/public/haifa.jpg"]
           albumLength=4
           document.getElementById('slide1').src = slideimages[step]
           document.getElementById('slide2').src = slideimages[step1]
@@ -227,23 +227,46 @@
         console.log(input2);
 	      if (albumLength>0)
 	      {
-	        for (i=0; i<13; i++){ $( ".photoList" ).append( "<br>" );}
+          $( ".photoList" ).empty();
+          for (i=0; i<13; i++){ $( ".photoList" ).append( "<br>" );}
 	        $( ".photoList" ).append( "<p id='public' style='font-size: 40px;font-weight: bold;'> New in the public:</p>" );
 	        for (i = 0; i < albumLength; i++) { 
 	          $( ".photoList" ).append( "<hr>" );
-
             	$(".photoList" ).append("<form>");
-		        $( ".photoList" ).append( "<img src='"+'public'+'/'+input[i]+"'  position='relative' height='200' width='200' />" );
-            	//if(typeof input2[i] !== "undefined")
+		        $( ".photoList" ).append( "<img id='image"+i+"' src='"+'public'+'/'+input[i]+"'  position='relative' height='200' width='200' />" );
+           // srcupdated = "public"+"/"+input[i]+"?" + new Date().getTime();
+            //$("#image"+i).attr("src", 'public'+'/'+input[i]);
+           // $("#image"+i).attr("src", srcupdated);
+              console.log("here is the dream: "+input2[i]);
               $(".photoList" ).append("Votes: <input type='text' id='vote"+i +"' class='textboxclass' value='"+input2[i]+"' name='phototag'> <button id='like"+i+"' type='button'>Like</button></form>");
+              $("#vote"+i).val(input2[i]);
+              console.log("there you go...");
 	        	}
             	$( ".photoList" ).append( "<br>");   
 	      }
 	    }
+
+      function replaceit(votes){
+        var vlength=Object.keys(votes).length;
+        console.log(votes);
+        console.log("length of votes here: "+vlength);
+        if (vlength>0)
+        {
+          for (i=0; i<vlength; i++){
+              console.log(votes[i]);
+              $("#vote"+i).val(votes[i]);
+              console.log("yes we can");
+
+            }
+             
+        }
+      }
+
 	  </script>	
     <script type="text/javascript">
             // readMe Cookie
       $(document).ready(function() {
+ 
 
 
         var userEmail = Cookies.get('email');
@@ -276,20 +299,16 @@
           },
         });
 		
-		
+		  setInterval(function() {
 		  $.ajax({
           url: "/public_image",
           type: "GET",
           dataType : "json",
 
           success: function( data ) {
-  //          console.log("this is great");
-  //          console.log("ready to go");
-  //          console.log(data.photos);
           console.log(data);
+          console.log("yes, yes yes.................")
 			    listit(data.photos, data.votes);
-
-
       //here we introduce the for loop for ajax vote
        for (i=0; i<Object.keys(data.photos).length; i++)
           {
@@ -308,17 +327,19 @@
         $.ajax({
         url: "image_vote/",
         type: "POST",
-        dataType : "text",
+        dataType : "json",
         data : { 
                 vote:  $("#vote"+i).val(),
                 photo: photo,
                     },
-        success: function( data ) {
-        //console.log(data);
-        location.reload();
-
-        console.log("thanks for your vote");
-                //console.log("successfully removed");
+        success: function( datum ) {
+        console.log(datum);
+        console.log(datum.photos);
+        console.log(datum.votes.length);
+        console.log(datum.votes);
+        replaceit(datum.votes);
+        console.log(datum.votes);
+          console.log("thanks for your vote");
                 }
         }); 
         });
@@ -329,7 +350,7 @@
 
           },
         });
-		
+        }, 1000); 
 
         window.setInterval(function() {
     //      console.log(Cookies.get('email'));
@@ -417,7 +438,6 @@
         }); 
 
 
-
       });
     </script>
   </head>
@@ -433,8 +453,8 @@
         </form>
       </div>
       <div class="picture_scroller">
-        <img id="slide1" src="istanbul.jpg" /></li>
-        <img id="slide2" src="jerusalem.jpg" /></li>
+        <img id="slide1" src="\public\istanbul.jpg" /></li>
+        <img id="slide2" src="\public\jerusalem.jpg" /></li>
       </div>
     </div>
 	

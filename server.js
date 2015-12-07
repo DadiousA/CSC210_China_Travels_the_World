@@ -119,24 +119,7 @@ app.get('/image/*', function (req, res) {
   vote=parseInt(vote)+1; //update the vote;
   db.run("UPDATE WanU_image SET vote=? where name=?",[vote,photo]);
   //introduce the database above;
-  res.send("OK");
-});
-// update the votes
 
-
-app.get('/public_image', function (req, res) {
-  //var userEmail = req.params[0]; 
-//  console.log(userEmail);
-
-/*old work
-  var files=fs.readdirSync(__dirname+'/static_files/public');
-  var user_photos={photos: files};
-  console.log(files);
-  res.send(user_photos);
-*/
-
-  /////new investigation
-  //var files=fs.readdirSync(__dirname+'/static_files/'+userEmail);
   var filedb1=new Array();
   var filedb2=new Array();
 
@@ -157,6 +140,35 @@ app.get('/public_image', function (req, res) {
           var user_photos={photos: filedb1, votes: filedb2,};
           console.log(user_photos);
           console.log("...............");
+          res.send(user_photos);  
+    });
+
+});
+
+// get user image
+app.get('/image', function (req, res) {
+  var userEmail = req.params[0]; 
+  var files=fs.readdirSync(__dirname+'/static_files/public');
+  res.send({photos: files});
+});
+
+// update the votes
+
+
+app.get('/public_image', function (req, res) {
+  var filedb1=new Array();
+  var filedb2=new Array();
+
+  var counter=0;
+  db.all("SELECT name, vote FROM WanU_image", function(err, rows) {  
+        rows.forEach(function (row) {  
+            console.log(row.name, row.vote);  
+            filedb1[counter]=row.name;
+            filedb2[counter]=row.vote;
+            counter=counter+1;
+            console.log("counter: "+counter);
+        });
+          var user_photos={photos: filedb1, votes: filedb2,};
           res.send(user_photos);  
     });
 });
@@ -192,7 +204,12 @@ app.post('/image_publish', function (req, res) {
   photo=photo.replace(/#/, '.' );
   console.log(photo);
 
-  var inStr = fs.createReadStream(__dirname+"/static_files/"+email+"/"+photo);
+  var inStr = fs.createReadStream(__dirname+"/static_files/"+'mining'+"/"+photo, { flags: 'rs',
+  encoding: null,
+  fd: null,
+  mode: 0o666,
+  autoClose: true
+});
   var outStr = fs.createWriteStream(__dirname+"/static_files/public/"+photo);
   inStr.pipe(outStr);
   db.run('INSERT OR IGNORE INTO WanU_image (name, vote) VALUES (?,?)', [photo, 1]);
@@ -205,7 +222,7 @@ app.post('/image_publish', function (req, res) {
     });
 
   //
-  console.log("just publicshed 1 photo");
+  console.log("just published 1 photo");
   res.send("OK");
 
 });
@@ -220,10 +237,12 @@ app.post('/image/*', function (req, res) {
       var numPictures = row[0].pictures;
       numPictures++;
       db.run("UPDATE WanU_user SET pictures=? where email=?",[numPictures,userEmail]);
-      fs.renameSync(files.image.path,
-                    __dirname + "\\static_files\\" + userEmail+"\\"+numPictures+path.extname(files.image.path));
+      var road=files.image.path
+      var extent=path.extname(road)
+      fs.renameSync(road,
+                    __dirname + "\\static_files\\" + userEmail+"\\"+userEmail+numPictures+path.extname(road));
+      fs.copy(__dirname + "\\static_files\\" + userEmail+"\\"+userEmail+numPictures+extent, __dirname + "\\static_files\\" +"mining"+"\\"+userEmail+numPictures+extent, {replace: true});
 
-    
       res.send("Image Successfully Uploaded.");
     });
   });

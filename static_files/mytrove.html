@@ -4,8 +4,8 @@
     <style type="text/css">
       body {
         background-image:url("background.gif");
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-repeat: repeat-y;
+       /* background-size: 100% 100%;*/
       }
       .picture_scroller>img {
         height: 80%;
@@ -237,8 +237,13 @@
 				$(".photoList").append(buttonstring);
 				console.log(infostring);
 	        	}
-            	$( ".photoList" ).append( "<br>");   
 	      }
+        $( ".photoList" ).append( "<br>"); 
+              $(".photoList").append("<hr>") ;
+              $(".photoList").append("<p style='font-size: 30px;font-weight: bold;'>Let's go places:</p>") ;
+               $(".photoList").append("<iframe width='600' height='450' frameborder='0' style='border:0' src='https://www.google.com/maps/d/embed?mid=z5LRszsxlq7U.krDYHdbP1wpY' allowfullscreen> </iframe>") ;
+               $(".photoList").append("<hr>") ;
+               $( ".photoList" ).append( "<br>"); 
 	    }
 	  </script>	
     <script type="text/javascript">
