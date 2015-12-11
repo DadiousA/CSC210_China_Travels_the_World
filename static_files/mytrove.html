@@ -51,7 +51,7 @@
           $( "#photoList" ).append( "<p id='plabel' style='font-size: 40px;font-weight: bold;'> My personal collection:</p>" );
           for (i = 0; i < photos.length; i++) { 
             $("#photoList").append("<hr style='clear: both'><form id=photo"+[i]+">");
-            $("#photoList").append( "<a href='/user_files/"+userEmail+"/"+photos[i]+"'><img src='/user_files/"+userEmail+'/'+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both'></a>" );
+            $("#photoList").append( "<a href='/user_files/"userEmail+"/"+photos[i]+"'><img src='/user_files/"+userEmail+'/'+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both'></a>" );
             $("#photoList").append("<button id='delete" +i+"' class='buttons'>Delete</button><button type='button' id='share"+i+"' class='buttons'>Share</button></form>");
             (function(i){
               $("#delete"+i).click(function(){
@@ -143,7 +143,7 @@
       <input type="file" id="inputFile"  class="pref-input" name="image" accept="image/*"/> 
     </form>
 	  <div id="editFileLabel">
-      <button text-align="right" style="font-size: 30px; font-family: Helvetica; font-style: normal; position: fixed; right: 5%; bottom: 30px; color: blue; z-index: 100">Back to Marketplace</button> 
+      <button text-align="right" style="font-size: 30px; font-family: Helvetica; font-style: normal; position: fixed; right: 5%; bottom: 10px; color: blue;">Back to Marketplace</button> 
     </div>
 	<div id='photoPanel'>   
 	  <div id="photoList">

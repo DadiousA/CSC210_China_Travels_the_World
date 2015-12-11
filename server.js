@@ -110,7 +110,6 @@ app.post('/image/*', function (req, res) {
   form.uploadDir = __dirname + "/static_files/user_files/"+userEmail;
   form.keepExtensions = true;
   form.parse(req, function(err, fields, files) {
-
       var filesRes=fs.readdirSync(__dirname+'/static_files/user_files/'+userEmail);
       res.send({photos: filesRes});
   });
@@ -190,7 +189,16 @@ app.post('/image_publish', function (req, res) {
   var postBody = req.body;
   var photo = postBody.photo;
   var userEmail = postBody.email;
-  
+  /*
+  var inStr = fs.createReadStream(__dirname+"/static_files/"+'mining'+"/"+photo, { flags: 'rs',
+    encoding: null,
+    fd: null,
+    mode: 0o666,
+    autoClose: true
+  });
+  var outStr = fs.createWriteStream(__dirname+"/static_files/public/"+photo);
+  inStr.pipe(outStr);
+  */
   db.run('INSERT OR IGNORE INTO WanU_image (photo, email, vote) VALUES (?,?,?)', [photo, userEmail, 0]);
   fs.copySync(__dirname + "/static_files/user_files/" + userEmail+"/"+photo,
     __dirname + "/static_files/public/"+photo);
