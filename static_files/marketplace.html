@@ -82,7 +82,7 @@
           $( "#best" ).append( "<p id='plabel' class='texty' style='font-size: 40px;font-weight: bold; '> See Maketplace:</p>" );
           for (i = 0; i < photos.length; i++) { 
             $("#photoList").append("<div id='photo"+[i]+"'><hr style='clear: both'></div>");
-            $("#photo"+i).append( "<img src='/public/"+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'/>" );
+            $("#photo"+i).append( "<a href='/public/"+photos[i]+"'><img src='/public/"+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'></a> " );
 
             $("#photo"+i).append(" <p class='texty'>Likes:</p> <input type='text' id='vote"+i +"' class='buttons' value='"+votes[i]+"' name='phototag'  disabled> <button id='like" +i+"' class='buttons'>Like it!</button>");
             if(userEmail == emails[i])$("#photo"+i).append(" <p class='texty' id='des"+i+"'>This is your work!</p>");
@@ -111,7 +111,7 @@
           $('#photo'+maxIndex).remove();
           
           $("#best").append("<hr style='clear: both'><form id='bestphoto'>");
-            $("#best").append( "<img src='/public/"+photos[maxIndex]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'/>" );
+            $("#best").append( "<a href='/public/"+photos[maxIndex]+"'><img src='/public/"+photos[maxIndex]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'></a>" );
 
             $("#best").append(" <p class='texty'>Likes:</p> <input type='text' id='voteBest' class='buttons' value='"+votes[maxIndex]+"' name='phototag'  disabled> <button id='likeBest' class='buttons'>Like it!</button></form>");
             if(userEmail == emails[maxIndex])$("#best").append(" <p class='texty'>This is your work!</p>");
@@ -166,22 +166,6 @@
         slider.$ScaleWidth(slider.$Elmt.parentNode.clientWidth - 50); 
       }
       
-      function replaceit(votes){
-        var vlength=Object.keys(votes).length;
-        console.log(votes);
-        console.log("length of votes here: "+vlength);
-        if (vlength>0)
-        {
-          for (i=0; i<vlength; i++){
-              console.log(votes[i]);
-              $("#vote"+i).val(votes[i]);
-              console.log("yes we can");
-
-            }
-             
-        }
-      }
-
 	  </script>	
     <script type="text/javascript">
       $(document).ready(function() {
@@ -195,7 +179,6 @@
           dataType : "json",
 
           success: function( data ) {
-            console.log(data);
             $("#language").val(data.language);
             $("#city").val(data.city);
             userName = data.name;

@@ -51,7 +51,7 @@
           $( "#photoList" ).append( "<p id='plabel' style='font-size: 40px;font-weight: bold;'> My personal collection:</p>" );
           for (i = 0; i < photos.length; i++) { 
             $("#photoList").append("<hr style='clear: both'><form id=photo"+[i]+">");
-            $("#photoList").append( "<img src='/user_files/"+userEmail+'/'+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both'/>" );
+            $("#photoList").append( "<a href='/public/"+photos[i]+"'><img src='/user_files/"+userEmail+'/'+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both'></a>" );
             $("#photoList").append("<button id='delete" +i+"' class='buttons'>Delete</button><button type='button' id='share"+i+"' class='buttons'>Share</button></form>");
             (function(i){
               $("#delete"+i).click(function(){
