@@ -1,29 +1,11 @@
 <html>
   <head>
     <title>Wan'U</title>
-    <style type="text/css">
-      body {
-        background-image:url("background.gif");
-        background-repeat: repeat-y;
-       /* background-size: 100% 100%;*/
-      }
-      .picture_scroller>img {
-        height: 80%;
-        margin: 2%;
-        border: 5px solid white;
-        text-align:center;
-      }
-      .picture_scroller{
-        text-align:center; 
-        float: left;
-        width: 50%;
-        opacity: 1;
-      }
-      #header {
-        color: black;
-        font-size: 50px;
-        font-family: "Lucida Console";
-        margin: 20px;
+    <style>
+      body{
+        background-image:url("options/background.gif"); 
+        background-repeat: no-repeat; 
+        background-size: 100% 100%;
       }
       i{
         font-size: 70px;
@@ -31,243 +13,91 @@
         font-style: normal;
         font-weight: bold;
       }
-      #upper-right{
-        padding: 20px;
-        height: 20%;
-        position: absolute;
-        width: 40%;
-        top: 30px;
-        right: 5px;
-      }
-	  
-	  .photoUpPart{
-	    padding: 20px;
-        position: absolute;
-        top: 43%;
-        right: 50px;
-	  }
-      .whole_pref_container{
-       
-        background-color:rgba(50,200,50,0.3);
-        width: 60%;
-        float: left;
-      }
-      #logout_container{
-        margin: auto;
-        clear: left;
-        width: 40%;
-        float: left;
-        opacity: 1;
-      }
-      .pref_container{
-        clear: both;
-        margin: 10px auto;
-        height: 80%;
-        top: 30px;
-      }
-      #pref_main_label{
-        text-align:center;
-        font-size: 25px;
+      .pref-input{
         font-family: "Verdana";
-        font-style: normal;
-        font-weight: bold;
-      }
-	  
-	  #editFileLabel{
-		text-align:center;
-		font-size: 30px;
-        font-family: Helvetica;
-        font-style: normal;
-		position: fixed;
-		right: 5%;
-		bottom: 10px;
-        color: blue;
-	  }
-      .pref_form{
-        width: 100%;
-      }
-      .pref_label{
-        padding: 5px;
-        margin:5px;
-        float: left;
-        clear: left; 
-        font-family: "Verdana";
-        font-weight: bold;
-        font-size: 20px;
-        width: 35%;
-        text-align:center;
-      }
-
-
-
-      .form-control{
-        font-family: "Verdana";
-        float: right;
         margin: 5px;
         padding: 5px;
         border: 3px solid #DDDDDD;
         font-size: 20px;
-        width: 55%;
+        width: 400px;
         text-align:center;
       }
-      #time{
-        position: absolute;
-        right: 5px;
-        top: 10px;
-        font-size: 15px;
-      }
-      .photoUpPart{
-        width: 40%;
-        float: right;
-        font-family: "Comic Sans MS";
-        font-size: 30px;
-        padding: 8px;
-        height:17%;
-      }
-      #blog{
-        position: relative;
+      .buttons{
+        width: 100px; 
+        height: 50px; 
         float: left;
-        font-family: "Arial";
-        font-size: 30px;
-        padding: 15px;
-        font-weight: bold;
-        height:17%;
+        font-family: "Verdana";
+        margin: 5px;
+        padding: 5px;
+        border: 3px solid #DDDDDD;
+        font-size: 20px;
+        text-align:center;
       }
-
-      .picture_scroller{
-        background-color:rgba(50,200,50,0.3);
-        position: relative;
-        width: 100%;
-        height: 80%;
-        bottom: 10%;
-      }
-	 
-      #logout{
-        position: relative;
-        width: 80%;
-        height: 50%;
-      }
-      #logout:hover{
-        background-color:rgba(51,153,255,0.6);
-      }
-      #deleteaccount{
-        width: 90%;
-        height: 40%;
-        padding: 10px;
-      }
-      #deleteaccount:hover{
-        background-color:rgba(200,223,255,0.6);
-      }
-      #inputFile{
-        width: 45%;
-      }
-      #inputFileLabel{
-        float: right;
-        margin-right: 10px;
-        margin-top: 5px;
-      }
-      #photoUpload{
-        float: right;
-      }
-      #photoEdit{
-      	float: left;
-      	position: relative;
-		bottom: 10px;
-      }
+    </style>  
       
-    </style>
     
 	  <script src="JS-api/jquery-2.1.4.js"></script>
     <script src="JS-api/js.cookie.js"></script>
-     
-	
+
+
     <script type="text/javascript">
 
-      var step=0, step1=1
-      function slideit(input){
-  //if browser does not support the image object, exit.
-        var albumLength=Object.keys(input).length;
-   //     console.log(typeof albumLength);
-   //     console.log(albumLength>0);
-        if (!document.images)
-          return
-        var slideimages
-        if (albumLength>1){
-          slideimages=input
-          document.getElementById('slide1').src = Cookies.get('email')+'/'+slideimages[step]
-          document.getElementById('slide2').src = Cookies.get('email')+'/'+slideimages[step1]
+      function listit(photos){
+        var userEmail = Cookies.get('email');
+        if (photos.length>0)
+        {
+          $('#photoList').remove();
+          $( "#photoPanel" ).append( '<div id="photoList"></div> ');
+          for (i=0; i<2; i++){ $( "#photoList" ).append( "<br>" );}
+          $( "#photoList" ).append( "<p id='plabel' style='font-size: 40px;font-weight: bold;'> My personal collection:</p>" );
+          for (i = 0; i < photos.length; i++) { 
+            $("#photoList").append("<hr style='clear: both'><form id=photo"+[i]+">");
+            $("#photoList").append( "<img src='/user_files/"+userEmail+'/'+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both'/>" );
+
+            $("#photoList").append("<button id='delete" +i+"' class='buttons'>Delete</button><button type='button' id='share"+i+"' class='buttons'>Share</button></form>");
+            (function(i){
+                  $("#delete"+i).click(function(){
+                    $.ajax({
+                      url: "image/"+userEmail,
+                      type: "Delete",
+                      dataType: "json",
+                      data : {
+                        photo: photos[i],
+                      },
+                      success: function(data){
+                          listit(data.photos);
+                      } 
+                    });
+                    alert("Image deleted.");
+                  });
+        
+                 $("#share"+i).click(function(){
+                    $.ajax({
+                      url: "image_publish",
+                      type: "POST",
+                      dataType : "text",
+                      data : {
+                        email: userEmail,  
+                        photo: photos[i],
+                      }
+                    });
+                    alert("The image is in Marketplace! Go and have a look!");
+                  });
+            })(i);
+          }
         }
         else{
-          slideimages=new Array()
-          slideimages=["index_eiffel.jpg", "index_geneva.jpg", "toulouse.jpg", "haifa.jpg"]
-          albumLength=4
-          document.getElementById('slide1').src = slideimages[step]
-          document.getElementById('slide2').src = slideimages[step1]
-        } 
-        if (step<(albumLength-1))
-          step++
-        else
-          step=0
-        if (step1<(albumLength-1)) //3 for 4 images
-          step1++
-        else
-          step1=0
-        setTimeout(function() {
-          slideit(input);
-        }, 2000)
+            $('#photoList').html('No collections currently. Upload one?');
+            $('#photoList').css('font-size','40px');
+            $('#photoList').css('font-weight','bold');
+          }
       }
-    </script>
-  
-	  <script>
-	    function listit(input){
-	      var albumLength=Object.keys(input).length;
-	      if (albumLength>0)
-	      {
-	        for (i=0; i<13; i++){ $( ".photoList" ).append( "<br>" );}
-	        $( ".photoList" ).append( "<p id='public' style='font-size: 40px;font-weight: bold;'> My personal collection:</p>" );
-	        for (i = 0; i < albumLength; i++) { 
-				$( ".photoList" ).append( "<hr>" );
-                var infostring="<form id="+input[i]+">"
-            	$(".photoList" ).append(infostring);
-		        $( ".photoList" ).append( "<img src='"+Cookies.get('email')+'/'+input[i]+"'  position='relative' height='200' width='200' />" );
-		     	var buttonstring="<button type='button' id='share"+i+"'"+">Share</button><button id='delete" +i+"'"+">Delete</button></form>";
-                console.log(buttonstring);
-				// delete button style: delete,1 
-            	//$(".photoList" ).append("<button type='button'>Share</button><button type='button'>Delete</button></form>");
-				$(".photoList").append(buttonstring);
-				console.log(infostring);
-	        	}
-	      }
-        $( ".photoList" ).append( "<br>"); 
-              $(".photoList").append("<hr>") ;
-              $(".photoList").append("<p style='font-size: 30px;font-weight: bold;'>Let's go places:</p>") ;
-               $(".photoList").append("<iframe width='600' height='450' frameborder='0' style='border:0' src='https://www.google.com/maps/d/embed?mid=z5LRszsxlq7U.krDYHdbP1wpY' allowfullscreen> </iframe>") ;
-               $(".photoList").append("<hr>") ;
-               $( ".photoList" ).append( "<br>"); 
-	    }
-	  </script>	
-    <script type="text/javascript">
-            // readMe Cookie
       $(document).ready(function() {
 
 
         var userEmail = Cookies.get('email');
-        var userName = "";
-        var photoCount=0;
-		var photolist;
-        $.ajax({
-          url: "user_pref/"+userEmail,
-          type: "GET",
-          dataType : "json",
-
-          success: function( data ) {
-            $("#language").val(data.language);
-            $("#city").val(data.city);
-            userName = data.name;
-			$("#header").html("<i>" +'</i>'+"<br>"+"<p>To see a world in a grain of pixels.</p>");
-          //  $("#header").html("<i>" +userEmail+'</i>.'+"<br>"+"<p>To see a world in a grain of pixels.</p>");
-          },
-        });
+        var userName = Cookies.get('name');
+        
 
         $.ajax({
           url: "/image/"+userEmail,
@@ -275,147 +105,17 @@
           dataType : "json",
 
           success: function( data ) {
-  //          console.log("this is great");
-  //          console.log("ready to go");
-  //          console.log(data.photos);
-			  listit(data.photos);
-			  photoCount=data.photos.length; //dynamic updating;
-			  console.log(photoCount+"count");
-			  photoList=data.photos;
-			  
-			  
-			  
-			  for (i=0; i<photoCount; i++)
-					{
-				var keys1=new Array();
-				var keys2=new Array();
-				//console.log("hi: "+photoList[i]);
-				keys1[i]="#delete"+i;
-				//console.log(key1);
-				keys2[i]="#share"+i;
-				
-				
-				//introduce the closure
-
-
-				(function(i)
-					{
-				$(keys1[i]).click(function(){
-				photobye=photoList[i].replace(/\./, "#");
-				console.log("looks great: ", photobye);
-               // console.log("deleting...");
-				$.ajax({
-				url: "image_delete/",
-				type: "POST",
-				//async: false, //new stuff, force it to work step by step
-				dataType : "text",
-				data : {  email: userEmail,
-                          photo: photobye,
-                    },
-				//email: userEmail,	
-				success: function( data ) {
-				//console.log(data);
-				location.reload();
-				console.log("Now left: ",  photoCount);
-                //console.log("successfully removed");
-                }
-				});
-				});
-				
-			  $(keys2[i]).click(function(){
-				photopublish=photoList[i].replace(/\./, "#");
-				console.log("looks great: ", photopublish);
-               // console.log("deleting...");
-				$.ajax({
-				url: "image_publish",
-				type: "POST",
-				dataType : "text",
-				data : {  email: userEmail,
-                          photo: photopublish,
-                    },
-				//email: userEmail,	
-				success: function( data ) {
-				//console.log(data);
-				location.reload();
-				console.log("Now published");
-                //console.log("successfully removed");
-                }
-				});
-				});
-				
-				
-				
-				})(i);
-				
-				}
-			  //#################
-          },
+            if(data.photos.length>0)
+			      listit(data.photos);
+			    }      
         });
-
-        window.setInterval(function() {
-    //      console.log(Cookies.get('email'));
-          if (Cookies.get('email') == undefined) {
-            $.ajax({
-              url: "user/"+userEmail,
-              type: "PUT",
-              dataType : "text",
-              success: function( data ) {
-                alert("You need to relog in!");
-                window.location.replace('index.html');
-              }
-            });
-          }
-        }, 1000); 
-
-        $("#time").val("Current time: " + new Date()+'.');
-        setInterval(function(){$("#time").html("Current time: " + new Date()+'.');}, 1000);
-
-        $("#logout").click(function() {        
-          $.ajax({
-            url: "user/"+userEmail,
-            type: "PUT",
-            dataType : "text",
-            success: function( data ) {
-                Cookies.remove('email');
-                window.location.replace('index.html');
-            }
-          });
-        });
+       
 
          $("#editFileLabel").click(function() {        
             window.location.replace('log_in.html');
-        
-        });
-
-        $("#deleteaccount").click(function() {        
-          var t=confirm("I really want to delete this account.");
-          if (t==1){
-            $.ajax({
-              url: "user/"+userEmail,
-              type: "DELETE",
-              dataType : "text",
-              success: function( data ) {
-                  Cookies.remove('email');
-                  window.location.replace('index.html');
-              }
-            });
-          }
-        });
-
-        $( ".pref_form" ).focusout(function() {
-          $.ajax({
-            url: "user_pref/",
-            type: "POST",
-            dataType : "text",
-            data : {  email: userEmail,
-                      language: $("#language").val(),
-                      city: $("#city").val(),
-                    },
-          });
         });
 
         $('#inputFile').change(function(){
-    //      console.log($('#inputFile').val());
           var formData = new FormData(document.getElementById("photoUpload"));
           $.ajax({
             url: '/image/'+userEmail,
@@ -426,15 +126,13 @@
             type: 'POST',
 
             success: function( data ) {
-              alert(data);
+              alert("Image uploaded successfully!");
               var inputFile = $("#inputFile");
               inputFile.replaceWith( inputFile = inputFile.clone( true ) );
-              location.reload();
+              listit(data.photos);
             },
           });
-          
-        }); 
-
+        });
 
 
       });
@@ -442,69 +140,24 @@
   </head>
   
   <body>
-    <h1 id='header'>Perfect at Ease in Zion!</h1>
-	<div class="photoUpPart">
-        <form  id="photoUpload">
-          <input type="file" id="inputFile"  class="form-control" name="image" accept="image/*"/> 
-          <label id='inputFileLabel'>Add to my collection:</label>
-        </form>
+    <h1 id='header' style='color: black; font-size: 50px;font-family: "Lucida Console";margin: 20px;'>To see a world in a grain of pixels.</h1>
+    <form id="photoUpload">
+      
+      <label id='uplabel' style='width: 40%;font-family: "Comic Sans MS";font-size: 30px;padding: 8px;height:17%;'>Add to my album:</label>
+      <input type="file" id="inputFile"  class="pref-input" name="image" accept="image/*"/> 
+    </form>
+	  <div id="editFileLabel">
+      <button text-align="right" style="font-size: 30px; font-family: Helvetica; font-style: normal; position: fixed; right: 5%; bottom: 10px; color: blue;">Back to Marketplace</button> 
     </div>
-	<div id="editFileLabel"> 		 
-	     <form>
-         <label text-align="right">Return to MarketPlace</label> 
-         </form>
-     </div>
-	   
-	<div class="photoList"></div>
-    <div id='time'></div>
-    <div id='upper-right'>
-      <div id='logout_container'>
-       <!-- <img id='deleteaccount' src="deleteaccount.png">-->
-      </div>
+	<div id='photoPanel'>   
+	  <div id="photoList">
+      <p id='plabel' style='font-size: 40px;font-weight: bold;'> No collections currently. Upload one?</p>
+    </div>
+  </div>
+  <div id='time'></div>
   
-    <!--  <div class="whole_pref_container">
-        <div id='pref_main_label'>Personal Preferences</div>
-        <div class="pref_container">
-          <div class="pref_form">
-            <label class='pref_label'>language:</label>
-            <input type="text" class="form-control" id="language" placeholder="Enter language">
-          </div>
-          <div class="pref_form">
-            <label class='pref_label'>City:</label>
-            <input type="text" class="form-control" id="city" placeholder="Enter city">
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     
 
   </body>
 </html>
-<!--
-/*
-  $("#updateButton").click(function() {
-    $.ajax({
-      // The URL for the request - note the simple REST API!
-      // all URLs are relative to http://localhost:3000/
-      url: "users/" + $("#nameBox").val(),
-      type: "PUT",
-      dataType : "text", // this URL returns a plain text string, not JSON
-
-      data : { job: $("#jobBox").val(),
-               pet: $("#petBox").val()
-             },
-
-      success: function( data ) {
-        console.log("You received some data!", data);
-        if (data == 'OK') {
-          $("#status").html("Successfully updated user");
-        } else {
-          $("#status").html("Error: could not update user");
-        }
-      },
-    });
-  });
-
-
--->

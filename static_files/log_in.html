@@ -1,29 +1,10 @@
 <html>
   <head>
     <title>Wan'U</title>
-    <style type="text/css">
-      body {
-        background-image:url("background.gif");
-        background-repeat: repeat-y;
-       /* background-size: 100% 100%;*/
-      }
-      .picture_scroller>img {
-        height: 80%;
-        margin: 2%;
-        border: 5px solid white;
-        text-align:center;
-      }
-      .picture_scroller{
-        text-align:center; 
-        float: left;
-        width: 50%;
-        opacity: 1;
-      }
-      #header {
-        color: black;
-        font-size: 50px;
-        font-family: "Lucida Console";
-        margin: 20px;
+    <style>
+      body{
+        background-image:url("options/background.gif"); 
+        background-repeat: repeat-y; 
       }
       i{
         font-size: 70px;
@@ -31,55 +12,7 @@
         font-style: normal;
         font-weight: bold;
       }
-      #upper-right{
-        padding: 20px;
-        height: 20%;
-        position: absolute;
-        width: 40%;
-        top: 30px;
-        right: 5px;
-      }
-      .whole_pref_container{
-       
-        background-color:rgba(50,200,50,0.3);
-        width: 60%;
-        float: left;
-      }
-      #logout_container{
-        margin: auto;
-        clear: left;
-        width: 40%;
-        float: left;
-        opacity: 1;
-      }
-      .pref_container{
-        clear: both;
-        margin: 10px auto;
-        height: 80%;
-        top: 30px;
-      }
-      #pref_main_label{
-        text-align:center;
-        font-size: 25px;
-        font-family: "Verdana";
-        font-style: normal;
-        font-weight: bold;
-      }
-	  
-	  #editFileLabel{ 
-		text-align:center;
-		font-size: 30px;
-        font-family: Helvetica;
-        font-style: normal;
-		position: fixed;
-		right: 5%;
-		bottom: 10px;
-        color: blue;
-	  }
-      .pref_form{
-        width: 100%;
-      }
-      .pref_label{
+      .pref-label{
         padding: 5px;
         margin:5px;
         float: left;
@@ -90,13 +23,7 @@
         width: 35%;
         text-align:center;
       }
-
-	.textboxclass {
-		height: 20px;
-		width: 30px;
-		}
-
-      .form-control{
+      .pref-input{
         font-family: "Verdana";
         float: right;
         margin: 5px;
@@ -106,146 +33,127 @@
         width: 55%;
         text-align:center;
       }
-      #time{
-        position: absolute;
-        right: 5px;
-        top: 10px;
-        font-size: 15px;
-      }
-      .photoUpPart{
-        width: 40%;
-        float: right;
-        font-family: "Comic Sans MS";
-        font-size: 30px;
-        padding: 8px;
-        height:17%;
-      }
-      #blog{
-        position: relative;
-        float: left;
-        font-family: "Arial";
-        font-size: 30px;
-        padding: 15px;
-        font-weight: bold;
-        height:17%;
-      }
-      .picture_holder{
-        background-color:rgba(50,200,50,0.3);
-        position: relative;
-        width: 100%;
-        top: 200px;
-        height: 65%;
-      }
-
-      .picture_scroller{
-        background-color:rgba(50,200,50,0.3);
-        position: relative;
-        width: 100%;
-        height: 80%;
-        bottom: 10%;
-      }
-	 
-      #logout{
-        position: relative;
-        width: 80%;
-        height: 50%;
-      }
-      #logout:hover{
+      #logout:hover {
         background-color:rgba(51,153,255,0.6);
-      }
-      #deleteaccount{
-        width: 90%;
-        height: 40%;
-        padding: 10px;
       }
       #deleteaccount:hover{
         background-color:rgba(200,223,255,0.6);
       }
-      #inputFile{
-        width: 45%;
+      .buttons{
+        position: relative;
+        width: 100px; 
+        height: 50px;
+        left: 40px; 
+        float: left;
+        font-family: "Verdana";
+        margin: 5px;
+        border: 3px solid #DDDDDD;
+        font-size: 20px;
+        text-align:center;
       }
-      #inputFileLabel{
-        float: right;
-        margin-right: 10px;
-        margin-top: 5px;
+      .texty{
+        position: relative;
+        left: 40px;
+        margin: 10px auto; 
+        float: left;
+        font-family: "Verdana";
+        padding: 5px;
+        font-size: 20px;
+        text-align:center;
       }
-      #photoUpload{
-        float: right;
-      }
-      #photoEdit{
-      	float: left;
-      	position: relative;
-		bottom: 10px;
-      }
-      
     </style>
     
 	  <script src="JS-api/jquery-2.1.4.js"></script>
     <script src="JS-api/js.cookie.js"></script>
-     
-	
-    <script type="text/javascript">
+    <script src="JS-api/jssor.slider.debug.js"></script>
 
-      var step=0, step1=1
-      function slideit(input){
-  //if browser does not support the image object, exit.
-        var albumLength=Object.keys(input).length;
-   //     console.log(typeof albumLength);
-   //     console.log(albumLength>0);
-        if (!document.images)
-          return
-        var slideimages
-        if (albumLength>1){
-          slideimages=input
-          document.getElementById('slide1').src = Cookies.get('email')+'/'+slideimages[step]
-          document.getElementById('slide2').src = Cookies.get('email')+'/'+slideimages[step1]
-        }
-        else{
-          slideimages=new Array()
-          slideimages=["/public/index_eiffel.jpg", "/public/index_geneva.jpg", "/public/toulouse.jpg", "/public/haifa.jpg"]
-          albumLength=4
-          document.getElementById('slide1').src = slideimages[step]
-          document.getElementById('slide2').src = slideimages[step1]
-        } 
-        if (step<(albumLength-1))
-          step++
-        else
-          step=0
-        if (step1<(albumLength-1)) //3 for 4 images
-          step1++
-        else
-          step1=0
-        setTimeout(function() {
-          slideit(input);
-        }, 2000)
-      }
-    </script>
-  
 	  <script>
-	    function listit(input, input2){
-	      var albumLength=Object.keys(input).length;
-        console.log(input2);
-	      if (albumLength>0)
-	      {
-          $( ".photoList" ).empty();
-          for (i=0; i<13; i++){ $( ".photoList" ).append( "<br>" );}
-	        $( ".photoList" ).append( "<p id='public' style='font-size: 40px;font-weight: bold;'> New in the public:</p>" );
-	        for (i = 0; i < albumLength; i++) { 
-	          $( ".photoList" ).append( "<hr>" );
-            	$(".photoList" ).append("<form>");
-		        $( ".photoList" ).append( "<img id='image"+i+"' src='"+'public'+'/'+input[i]+"'  position='relative' height='200' width='200' />" );
-           // srcupdated = "public"+"/"+input[i]+"?" + new Date().getTime();
-            //$("#image"+i).attr("src", 'public'+'/'+input[i]);
-           // $("#image"+i).attr("src", srcupdated);
-              console.log("here is the dream: "+input2[i]);
-              $(".photoList" ).append("Votes: <input type='text' id='vote"+i +"' class='textboxclass' value='"+input2[i]+"' name='phototag'> <button id='like"+i+"' type='button'>Like</button></form>");
-              $("#vote"+i).val(input2[i]);
-              console.log("there you go...");
-	        	}
-            	$( ".photoList" ).append( "<br>");   
-	      }
-	    }
+      function listit(photos,votes,emails){
+        var userEmail = Cookies.get('email');
+        var maxVote = 0;
+        var maxIndex = 0;
+        $('#photoList').remove();
+        $('#best').remove();
+        $( "#photoPanel" ).append( '<div id="photoList"></div> ');
+        $( "#bestPanel" ).append( '<div id="best"></div> ');
+        if (photos.length>0)
+        {
+          for (i=0; i<5; i++){ $( ".photoList" ).append( "<br>" );}
+          $( "#best" ).append( "<p id='plabel' class='texty' style='font-size: 40px;font-weight: bold; '> See Maketplace:</p>" );
+          for (i = 0; i < photos.length; i++) { 
+            $("#photoList").append("<div id='photo"+[i]+"'><hr style='clear: both'></div>");
+            $("#photo"+i).append( "<img src='/public/"+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'/>" );
 
+            $("#photo"+i).append(" <p class='texty'>Like:</p> <input type='text' id='vote"+i +"' class='buttons' value='"+votes[i]+"' name='phototag'  disabled> <button id='like" +i+"' class='buttons'>Like it!</button>");
+            if(userEmail == emails[i])$("#photo"+i).append(" <p class='texty' id='des"+i+"'>This is your work!</p>");
+            if(votes[i] > maxVote){maxIndex = i; maxVote = votes[i];}
+            (function(i){
+                  $("#like"+i).click(function(){
+                    $.ajax({
+                      url: "/votes",
+                      type: "PUT",
+                      data : {
+                        photo: photos[i],
+                        vote: votes[i]
+                      },
+                      success: function(data){
+                        alert("Thank you for your vote!");
+                        listit(data.photos,data.votes,data.emails);
+                      }
+                    });
+                    
+                  });
+        
+            })(i);
+          }
+
+          $('#vote'+maxIndex).css('border-color', 'green');
+          $('#photo'+maxIndex).remove();
+          
+          $("#best").append("<hr style='clear: both'><form id='bestphoto'>");
+            $("#best").append( "<img src='/public/"+photos[maxIndex]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'/>" );
+
+            $("#best").append(" <p class='texty'>Like:</p> <input type='text' id='voteBest' class='buttons' value='"+votes[maxIndex]+"' name='phototag'  disabled> <button id='likeBest' class='buttons'>Like it!</button></form>");
+            if(userEmail == emails[maxIndex])$("#best").append(" <p class='texty'>This is your work!</p>");
+            $("#best").append(" <p class='texty'>BEST LIKED IMAGE OF THE WEEK!</p>");
+
+            $("#likeBest").click(function(){
+              $('#like'+maxIndex).trigger('click');
+            });
+                    
+            $('#voteBest').css('border-color', 'green'); 
+        }
+      }
+
+      function reloadJssor(photos) {
+        var userEmail = Cookies.get('email');
+        var options = { 
+          $AutoPlay: true,
+          $AutoPlaySteps: 4,
+          $SlideDuration: 160,
+          $SlideWidth: 300,
+          $SlideSpacing: 10,
+          $DragOrientation: 1,
+          $Cols: 4,
+          $ArrowNavigatorOptions: {                      
+                    $Class: $JssorArrowNavigator$,              
+                    $ChanceToShow: 2,
+                    $AutoCenter: 2,
+                    $Steps: 1
+                  }
+        };
+        var JssorStruct = "<div id='slider' style='position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1200px; height: 200px; overflow: hidden; visibility: hidden;'><div id='slides' data-u='slides' style='cursor: default; position: relative; top: 0px; left: 0px; width: 1200px; height: 200px; overflow: hidden;'></div></div>";
+        var ArrowStruct = "<style> .arrowleft, .arrowright {display: block;position: absolute;width: 55px;height: 55px;cursor: pointer;background: url(options/arrow.png) no-repeat;overflow: hidden;}.arrowleft { background-position: -3px -33px; }.arrowright { background-position: -63px -33px; }.arrowleft:hover { background-position: -123px -33px; }.arrowright:hover { background-position: -183px -33px; }.arrowleft.arrowleftdn { background-position: -243px -33px; }.arrowright.arrowrightdn { background-position: -303px -33px; }</style><span u='arrowleft' class='arrowleft' style='top: 123px; left: 8px;'></span><span u='arrowright' class='arrowright' style='top: 123px; right: 8px;'></span>"
+        $('#slider').remove();
+        $('#picture-panel').append(JssorStruct);
+        for(i=0;i<photos.length;i++){
+          $('#slides').append("<div style='display: none;'><img class='slides_img' data-u='image' src='/user_files/"+userEmail+"/"+photos[i]+"' /></div>");
+        }
+        $('#slider').append(ArrowStruct);
+        var slider = new $JssorSlider$('slider', options);
+        slider.$ScaleWidth(slider.$Elmt.parentNode.clientWidth - 50); 
+      }
+      
       function replaceit(votes){
         var vlength=Object.keys(votes).length;
         console.log(votes);
@@ -264,10 +172,7 @@
 
 	  </script>	
     <script type="text/javascript">
-            // readMe Cookie
       $(document).ready(function() {
- 
-
 
         var userEmail = Cookies.get('email');
         var userName = "";
@@ -286,74 +191,41 @@
         });
 
         $.ajax({
-          url: "/image/"+userEmail,
+          url: "/votes/"+userEmail,
           type: "GET",
           dataType : "json",
 
           success: function( data ) {
-  //          console.log("this is great");
-  //          console.log("ready to go");
-  //          console.log(data.photos);
-            slideit(data.photos);
-			//listit(data.photos);
+            if(data.photos.length>0)
+            {
+              reloadJssor(data.photos);
+            }
           },
         });
-		
-		  setInterval(function() {
-		  $.ajax({
-          url: "/public_image",
-          type: "GET",
-          dataType : "json",
-
-          success: function( data ) {
-          console.log(data);
-          console.log("yes, yes yes.................")
-			    listit(data.photos, data.votes);
-      //here we introduce the for loop for ajax vote
-       for (i=0; i<Object.keys(data.photos).length; i++)
-          {
-        var keys1=new Array();
-        //console.log("hi: "+photoList[i]);
-        keys1[i]="#like"+i;       
-        //introduce the closure
-        (function(i)
-          {
-        $(keys1[i]).click(function(){
-        //$("#vote"+i).val(parseInt($("#vote"+i).val())+1);
-        console.log("looks great: ", i);
-        console.log(data.photos[i]);
-        photo=data.photos[i].replace(/\./, "#");
-        // console.log("deleting...");
+		  
         $.ajax({
-        url: "image_vote/",
-        type: "POST",
-        dataType : "json",
-        data : { 
-                vote:  $("#vote"+i).val(),
-                photo: photo,
-                    },
-        success: function( datum ) {
-        console.log(datum);
-        console.log(datum.photos);
-        console.log(datum.votes.length);
-        console.log(datum.votes);
-        replaceit(datum.votes);
-        console.log(datum.votes);
-          console.log("thanks for your vote");
-                }
-        }); 
-        });
-         
-        })(i);
-        
-        }
+            url: "/votes",
+            type: "GET",
+            dataType : "json",
 
-          },
+            success: function( data ) {
+              listit(data.photos,data.votes,data.emails);
+            },
         });
-        }, 1000); 
+
+		    setInterval(function() {
+		      $.ajax({
+            url: "/votes",
+            type: "GET",
+            dataType : "json",
+
+            success: function( data ) {
+              listit(data.photos,data.votes,data.emails);
+            },
+          });
+        }, 5000); 
 
         window.setInterval(function() {
-    //      console.log(Cookies.get('email'));
           if (Cookies.get('email') == undefined) {
             $.ajax({
               url: "user/"+userEmail,
@@ -361,7 +233,7 @@
               dataType : "text",
               success: function( data ) {
                 alert("You need to relog in!");
-                window.location.replace('index.html');
+                $('#logout').trigger('click');
               }
             });
           }
@@ -374,17 +246,13 @@
           $.ajax({
             url: "user/"+userEmail,
             type: "PUT",
-            dataType : "text",
-            success: function( data ) {
-                Cookies.remove('email');
-                window.location.replace('index.html');
-            }
           });
+          Cookies.remove('email');
+          window.location.replace('/');
         });
 
          $("#editFileLabel").click(function() {        
             window.location.replace('mytrove.html');
-        
         });
 
         $("#deleteaccount").click(function() {        
@@ -393,12 +261,9 @@
             $.ajax({
               url: "user/"+userEmail,
               type: "DELETE",
-              dataType : "text",
-              success: function( data ) {
-                  Cookies.remove('email');
-                  window.location.replace('index.html');
-              }
             });
+            Cookies.remove('email');
+            window.location.replace('/');
           }
         });
 
@@ -406,46 +271,78 @@
           $.ajax({
             url: "user_pref/",
             type: "POST",
-            dataType : "text",
-
             data : {  email: userEmail,
                       language: $("#language").val(),
                       city: $("#city").val(),
                     },
           });
         });
-
-        $('#inputFile').change(function(){
-    //      console.log($('#inputFile').val());
-          var formData = new FormData(document.getElementById("photoUpload"));
-          $.ajax({
-            url: '/image/'+userEmail,
-            contentType: false,
-            processData: false,
-            enctype: "multipart/form-data",
-            data: formData,
-            type: 'POST',
-
-            success: function( data ) {
-              alert(data);
-              var inputFile = $("#inputFile");
-              inputFile.replaceWith( inputFile = inputFile.clone( true ) );
-              location.reload();
-
-            },
-          });
-          
-        }); 
-
-
+        for (i=0; i<20; i++){ $( "#photoList" ).append( "<br>" );}
+        
       });
     </script>
   </head>
+  <body>
+    <h1 id='header' style='color: black; font-size: 50px;font-family: "Lucida Console";margin: 20px;'>Welcome</h1>
+    
+    <div id='time' style='position:absolute; right: 5px;top: 10px;font-size: 15px;'></div>
+
+    <div id='user-panel' style='padding: 20px;height: 20%;position: absolute;width: 40%;top: 30px;right: 5px;'>
+      
+      <div id='logout-panel' style='margin: auto;clear: left;width: 40%;float: left;opacity: 1;'>
+        <img id='logout' src="options/logout.png" style='width: 80%;height: 50%;'>
+        <img id='deleteaccount' src="options/deleteaccount.png" style='width: 80%;height: 30%; padding: 10px'>
+      </div>
   
+      <div id="pref-panel" style='background-color:rgba(50,200,50,0.3);width: 60%;float: left;'>
+        <div id='pref-title' style='text-align:center;font-size: 25px;font-family: "Verdana";font-style: normal;font-weight: bold;'>Personal Preferences</div>
+        <div id="pref-table">
+          <div>
+            <label class='pref-label'>language:</label>
+            <input type="text" class="pref-input" id="language" placeholder="Enter language">
+          </div>
+          <div>
+            <label class='pref-label'>City:</label>
+            <input type="text" class="pref-input" id="city" placeholder="Enter city">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id='picture-panel' style="background-color:rgba(50,200,50,0.3);position: relative;width: 100%;top: 150px;height: 400px;">
+      <div id='picture-header' style='height: 70px'>
+        <div id="blog" style='float: left; font-family: "Arial";font-size: 30px; padding: 15px;font-weight: bold;'>My Shared Photos:</div>
+      
+        
+      </div>
+
+      <div id='slider' style='color: black; font-size: 60px;font-family: "Book Antiqua"; text-align:center;'>Ops! You haven't share any pictures! Click on "Open my Trove" to upload or share one?</div>      
+   </div>     
+    <!--
+    <div style='position:relative; top: 20%;'>
+      <div style='color: black; font-size: 30px;font-family: "Book Antiqua"; text-align:center;'>Developer</div>
+      <br>
+      <div style='color: black; font-size: 20px;font-family: "Book Antiqua"; text-align:center;'>Shengbo Ge &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Yu Wang</div>
+    </div>
+  -->
+    <div id="editFileLabel" >
+      <button text-align="right" style="font-size: 30px; font-family: Helvetica; font-style: normal; position: fixed; right: 5%; bottom: 10px; color: blue;">Open My Trove</button> 
+    </div>
+
+    
+
+    <div id='photoPanel' style='position: relative; top: 200px;'>
+      <div id='bestPanel'>
+        <div id='best'></div>
+      </div>   
+      <div id="photoList"></div>
+    </div>
+  </body>
+  <!--
   <body>
     <h1 id='header'>Welcome</h1>
     <div class='picture_holder'>
-      <div id="blog">My Personal Collection:</div>
+      <div id="blog">My Shared Collection:</div>
       <div class="photoUpPart">
         <form  id="photoUpload">
           <input type="file" id="inputFile"  class="form-control" name="image" accept="image/*"/> 
@@ -453,26 +350,23 @@
         </form>
       </div>
       <div class="picture_scroller">
-        <img id="slide1" src="\public\istanbul.jpg" /></li>
-        <img id="slide2" src="\public\jerusalem.jpg" /></li>
       </div>
     </div>
 	
 	     <div id="editFileLabel">       
 	     <form>
-         <label text-align="right">Edit My Trove</label> 
+         <label text-align="right">Open My Trove</label> 
          </form>
 		 </div>
 	   
-	<div class="photoList">
-	</div>
+	
 
     <div id='time'></div>
 
     <div id='upper-right'>
       <div id='logout_container'>
-        <img id='logout' src="logout.png">
-        <img id='deleteaccount' src="deleteaccount.png">
+        <img id='logout' src="options/logout.png">
+        <img id='deleteaccount' src="options/deleteaccount.png">
       </div>
   
       <div class="whole_pref_container">
@@ -493,31 +387,5 @@
     
 
   </body>
-</html>
-<!--
-/*
-  $("#updateButton").click(function() {
-    $.ajax({
-      // The URL for the request - note the simple REST API!
-      // all URLs are relative to http://localhost:3000/
-      url: "users/" + $("#nameBox").val(),
-      type: "PUT",
-      dataType : "text", // this URL returns a plain text string, not JSON
-
-      data : { job: $("#jobBox").val(),
-               pet: $("#petBox").val()
-             },
-
-      success: function( data ) {
-        console.log("You received some data!", data);
-        if (data == 'OK') {
-          $("#status").html("Successfully updated user");
-        } else {
-          $("#status").html("Error: could not update user");
-        }
-      },
-    });
-  });
-
-
 -->
+</html>

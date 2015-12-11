@@ -125,7 +125,7 @@
             alert("Sorry, need more information!");
           else
             $.ajax({
-              url: "/users",
+              url: "/user",
               type: "POST",
               dataType : "text",
 
@@ -136,8 +136,8 @@
               success: function( data ) {
                 if (data) {
                   alert("Welcome " + $("#nameBox").val() + "! You are now part of Wanyou!");
-                  Cookies.set('email', $("#emailBox").val(), { expires: 1/48 });
-                window.location.replace('log_in.html');
+                  Cookies.set('email', $("#emailBox").val());
+                  Cookies.set('name', $("#nameBox").val());
                 } 
                 else {
                   alert("Sorry, Account email already exists. Try another!");
@@ -150,7 +150,7 @@
 
         $("#logInButton").click(function() { 
           $.ajax({
-            url: "/users/" + $("#logInEmailBox").val(),
+            url: "/user/" + $("#logInEmailBox").val(),
             type: "GET",
             dataType : "text", 
 
