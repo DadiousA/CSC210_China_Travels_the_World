@@ -44,8 +44,7 @@
 
       function listit(photos){
         var userEmail = Cookies.get('email');
-        if (photos.length>0)
-        {
+        if (photos.length>0){
           $('#photoList').remove();
           $( "#photoPanel" ).append( '<div id="photoList"></div> ');
           for (i=0; i<2; i++){ $( "#photoList" ).append( "<br>" );}
@@ -53,36 +52,35 @@
           for (i = 0; i < photos.length; i++) { 
             $("#photoList").append("<hr style='clear: both'><form id=photo"+[i]+">");
             $("#photoList").append( "<img src='/user_files/"+userEmail+'/'+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both'/>" );
-
             $("#photoList").append("<button id='delete" +i+"' class='buttons'>Delete</button><button type='button' id='share"+i+"' class='buttons'>Share</button></form>");
             (function(i){
-                  $("#delete"+i).click(function(){
-                    $.ajax({
-                      url: "image/"+userEmail,
-                      type: "Delete",
-                      dataType: "json",
-                      data : {
-                        photo: photos[i],
-                      },
-                      success: function(data){
-                          listit(data.photos);
-                      } 
-                    });
-                    alert("Image deleted.");
-                  });
+              $("#delete"+i).click(function(){
+                $.ajax({
+                  url: "image/"+userEmail,
+                  type: "Delete",
+                  dataType: "json",
+                  data : {
+                    photo: photos[i],
+                  },
+                  success: function(data){
+                    listit(data.photos);
+                  } 
+                });
+                alert("Image deleted.");
+              });
         
-                 $("#share"+i).click(function(){
-                    $.ajax({
-                      url: "image_publish",
-                      type: "POST",
-                      dataType : "text",
-                      data : {
-                        email: userEmail,  
-                        photo: photos[i],
-                      }
-                    });
-                    alert("The image is in Marketplace! Go and have a look!");
-                  });
+              $("#share"+i).click(function(){
+                $.ajax({
+                  url: "image_publish",
+                  type: "POST",
+                  dataType : "text",
+                  data : {
+                    email: userEmail,  
+                    photo: photos[i],
+                  }
+                });
+                alert("The image is in Marketplace! Go and have a look!");
+              });
             })(i);
           }
         }
@@ -94,10 +92,8 @@
       }
       $(document).ready(function() {
 
-
         var userEmail = Cookies.get('email');
         var userName = Cookies.get('name');
-        
 
         $.ajax({
           url: "/image/"+userEmail,
@@ -112,7 +108,7 @@
        
 
          $("#editFileLabel").click(function() {        
-            window.location.replace('log_in.html');
+            window.location.replace('marketplace.html');
         });
 
         $('#inputFile').change(function(){

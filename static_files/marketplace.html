@@ -186,6 +186,7 @@
             $("#language").val(data.language);
             $("#city").val(data.city);
             userName = data.name;
+            Cookies.set('name', userName);
             $("#header").html("Welcome back, <i>" +userName+'</i>.');
           },
         });
@@ -256,7 +257,7 @@
         });
 
         $("#deleteaccount").click(function() {        
-          var t=confirm("I really want to delete this account.");
+          var t=confirm("Do you really want to delete this account? This will not remove your shared photos!");
           if (t==1){
             $.ajax({
               url: "user/"+userEmail,

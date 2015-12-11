@@ -28,7 +28,6 @@ db.run('CREATE TABLE IF NOT EXISTS WanU_image (photo TEXT PRIMARY KEY, email TEX
 //  db.run('INSERT OR IGNORE INTO WanU_image (name, vote) VALUES (?,?)', [startup[i], 1]);
 //}
 
-
 // creat account
 app.post('/user', function (req, res) {
   var postBody = req.body;
@@ -71,6 +70,7 @@ app.put('/user/*', function (req, res) {
   db.run("UPDATE WanU_user SET log_in=0 where email=?",[userEmail]);
 });
 
+// delete account
 app.delete('/user/*', function (req, res) {
   var userEmail = req.params[0]; 
   db.run("DELETE FROM WanU_user WHERE email=?",[userEmail]);
@@ -122,7 +122,7 @@ app.get('/image', function (req, res) {
   res.send({photos: files});
 });
 
-
+// delete user image
 app.delete('/image/*', function (req, res) {
   var photo=req.body.photo;
   var userEmail = req.params[0];
@@ -138,16 +138,13 @@ app.delete('/image/*', function (req, res) {
 // update the votes
  app.put('/votes', function (req, res) {
   var postBody = req.body;
- // var email=postBody.email;
   var photo=postBody.photo;
   var vote=postBody.vote;
-  vote=parseInt(vote)+1; //update the vote;
+  vote=parseInt(vote)+1;
   db.run("UPDATE WanU_image SET vote=? where photo=?",[vote,photo]);
-
   var filedb1=new Array();
   var filedb2=new Array();
   var filedb3=new Array();
-
   db.all("SELECT * FROM WanU_image", function(err, rows) {  
         for (i=0;i<rows.length;i++){
           filedb1[i] = rows[i].photo;
@@ -158,7 +155,7 @@ app.delete('/image/*', function (req, res) {
     });
 });
 
-
+// get the votes
 app.get('/votes', function (req, res) {
   var filedb1=new Array();
   var filedb2=new Array();
@@ -174,6 +171,7 @@ app.get('/votes', function (req, res) {
     });
 });
 
+// get the votes for a user
 app.get('/votes/*', function (req, res) {
   var userEmail = req.params[0];
   var filedb1=new Array();
@@ -186,6 +184,7 @@ app.get('/votes/*', function (req, res) {
     });
 });
 
+// publish the photo
 app.post('/image_publish', function (req, res) {
   var postBody = req.body;
   var photo = postBody.photo;

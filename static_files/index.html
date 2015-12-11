@@ -86,7 +86,6 @@
         var exhibit = [];
         var numberImage = 0;
 
-        //initiate
         $.ajax({
           url: "/image",
           type: "GET",
@@ -99,7 +98,6 @@
           },
         });
 
-        //recursion
         window.setInterval(function() {
                     $.ajax({
                         url: "/image",
@@ -136,8 +134,6 @@
               success: function( data ) {
                 if (data) {
                   alert("Welcome " + $("#nameBox").val() + "! You are now part of Wanyou!");
-                  Cookies.set('email', $("#emailBox").val());
-                  Cookies.set('name', $("#nameBox").val());
                 } 
                 else {
                   alert("Sorry, Account email already exists. Try another!");
@@ -156,8 +152,8 @@
 
             success: function( data ) {
               if (data=="OK") {
-                Cookies.set('email', $("#logInEmailBox").val(), { expires: 1/48 });
-                window.location.replace('log_in.html');
+                Cookies.set('email', $("#logInEmailBox").val());
+                window.location.replace('marketplace.html');
               }
               else if (data=="Fail"){ 
                 alert("Sorry, account already logged in!");
