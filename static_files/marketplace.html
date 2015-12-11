@@ -84,7 +84,7 @@
             $("#photoList").append("<div id='photo"+[i]+"'><hr style='clear: both'></div>");
             $("#photo"+i).append( "<img src='/public/"+photos[i]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'/>" );
 
-            $("#photo"+i).append(" <p class='texty'>Like:</p> <input type='text' id='vote"+i +"' class='buttons' value='"+votes[i]+"' name='phototag'  disabled> <button id='like" +i+"' class='buttons'>Like it!</button>");
+            $("#photo"+i).append(" <p class='texty'>Likes:</p> <input type='text' id='vote"+i +"' class='buttons' value='"+votes[i]+"' name='phototag'  disabled> <button id='like" +i+"' class='buttons'>Like it!</button>");
             if(userEmail == emails[i])$("#photo"+i).append(" <p class='texty' id='des"+i+"'>This is your work!</p>");
             if(votes[i] > maxVote){maxIndex = i; maxVote = votes[i];}
             (function(i){
@@ -113,13 +113,25 @@
           $("#best").append("<hr style='clear: both'><form id='bestphoto'>");
             $("#best").append( "<img src='/public/"+photos[maxIndex]+"' style='height: 200px; width: 300px; float: left; clear: both; left: 30px; right: 10px; position: relative;'/>" );
 
-            $("#best").append(" <p class='texty'>Like:</p> <input type='text' id='voteBest' class='buttons' value='"+votes[maxIndex]+"' name='phototag'  disabled> <button id='likeBest' class='buttons'>Like it!</button></form>");
+            $("#best").append(" <p class='texty'>Likes:</p> <input type='text' id='voteBest' class='buttons' value='"+votes[maxIndex]+"' name='phototag'  disabled> <button id='likeBest' class='buttons'>Like it!</button></form>");
             if(userEmail == emails[maxIndex])$("#best").append(" <p class='texty'>This is your work!</p>");
             $("#best").append(" <p class='texty'>BEST LIKED IMAGE OF THE WEEK!</p>");
 
-            $("#likeBest").click(function(){
-              $('#like'+maxIndex).trigger('click');
-            });
+                  $("#likeBest").click(function(){
+                    $.ajax({
+                      url: "/votes",
+                      type: "PUT",
+                      data : {
+                        photo: photos[maxIndex],
+                        vote: votes[maxIndex]
+                      },
+                      success: function(data){
+                        alert("Thank you for your vote!");
+                        listit(data.photos,data.votes,data.emails);
+                      }
+                    });
+                    
+                  });
                     
             $('#voteBest').css('border-color', 'green'); 
         }
@@ -183,6 +195,7 @@
           dataType : "json",
 
           success: function( data ) {
+            console.log(data);
             $("#language").val(data.language);
             $("#city").val(data.city);
             userName = data.name;
@@ -268,9 +281,9 @@
           }
         });
 
-        $( ".pref_form" ).focusout(function() {
+        $( ".pref-input" ).focusout(function() {
           $.ajax({
-            url: "user_pref/",
+            url: "/user_pref",
             type: "POST",
             data : {  email: userEmail,
                       language: $("#language").val(),
@@ -312,7 +325,7 @@
 
     <div id='picture-panel' style="background-color:rgba(50,200,50,0.3);position: relative;width: 100%;top: 150px;height: 400px;">
       <div id='picture-header' style='height: 70px'>
-        <div id="blog" style='float: left; font-family: "Arial";font-size: 30px; padding: 15px;font-weight: bold;'>My Shared Photos:</div>
+        <div id="blog" style='float: left; font-family: "Arial";font-size: 40px; padding: 15px;font-weight: bold;'>My Shared Photos:</div>
       
         
       </div>
